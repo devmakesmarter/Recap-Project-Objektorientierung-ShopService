@@ -3,7 +3,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main (String[] args){
+    public static void main (String[] args) throws ProductNotFoundException {
 
         ShopService shopService = new ShopService();
         //System.out.println(shopService);

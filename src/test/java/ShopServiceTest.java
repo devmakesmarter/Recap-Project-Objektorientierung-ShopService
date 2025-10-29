@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +26,7 @@ class ShopServiceTest {
     void addOrderTest_whenInvalidProductId_expectNull() {
         //GIVEN
         ShopService shopService = new ShopService();
-        List<String> productsIds = List.of("1", "2");
+        List<String> productsIds = List.of("1", "2","3");
 
         //WHEN
         Order actual = shopService.addOrder(productsIds);
@@ -33,4 +34,35 @@ class ShopServiceTest {
         //THEN
         assertNull(actual);
     }
+    @Test
+    void getOrdersByOrderStatusTest_whenWrongOrderStatus() {
+        //GIVEN
+        ShopService shopService = new ShopService();
+        List<String> productsIds = List.of("1", "2");
+        shopService.addOrder(productsIds);
+
+
+        //WHEN
+        List<Order> actual = shopService.getOrdersByOrderStatus(OrderStatus.COMPLETED);
+
+        //THEN
+        assertEquals(Collections.emptyList(),actual);
+    }
+
+    @Test
+    void getOrdersByOrderStatusTest_whenRightOrderStatus() {
+        //GIVEN
+        ShopService shopService = new ShopService();
+        List<String> productsIds = List.of("1", "2");
+        shopService.addOrder(productsIds);
+        List<Order> expected = shopService.getOrderRepo().getOrders();
+
+        //WHEN
+        List<Order> actual = shopService.getOrdersByOrderStatus(OrderStatus.PROCESSING);
+
+        //THEN
+        assertEquals(expected,actual);
+    }
+
+
 }
